@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 
 namespace Okosotthon
@@ -24,7 +25,11 @@ namespace Okosotthon
             {
                 string ertek = parancs.Substring("BEALLIT_HOMERSEKLET:".Length);
 
-                if (double.TryParse(ertek, out double homerseklet))
+                if (double.TryParse(
+                    ertek,
+                    NumberStyles.Float,
+                    CultureInfo.InvariantCulture,
+                    out double homerseklet))
                 {
                     this.CelHomerseklet = homerseklet;
                 }
@@ -38,7 +43,8 @@ namespace Okosotthon
 
         protected override bool OnTesztFuttatasa()
         {
-            return CelHomerseklet >= 5 && CelHomerseklet <= 35;
+
+            return (CelHomerseklet > 5 && CelHomerseklet < 35);
         }
 
     }
