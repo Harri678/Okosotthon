@@ -4,11 +4,12 @@ using System.Text;
 
 namespace Okosotthon
 {
-    public class OkosZar: OkosEszkoz
+    public class OkosZar: OkosEszkoz, IHangjelzo, IStatisztika
     {
 
         private bool zartE;
         private string pinKod;
+        private int hibasPinProbal;
 
         public bool ZartE { get => zartE; private set => zartE = value; }
 
@@ -28,6 +29,10 @@ namespace Okosotthon
                 if (megadottPin == this.pinKod)
                 {
                     this.ZartE = false;
+                }else if(megadottPin != this.pinKod)
+                {
+                    hibasPinProbal += 1;
+                    Csipog(10);
                 }
             }
             else if (parancs == "ZARAS")
@@ -59,8 +64,23 @@ namespace Okosotthon
             base.GyariBeallitasokVisszaallitasa();
             this.pinKod = "0000";
             this.zartE = true;
+            VeszjelzesInditasa();
         }
 
+        public void Csipog(int hosszu)
+        {
+            Console.WriteLine($"{this.Nev} hangjeézes: {hosszu} ideig.");
+        }
 
+        public void VeszjelzesInditasa()
+        {
+            Console.WriteLine($"RIASZTÁS! {this.Nev} vészjelzést indított!");
+        }
+
+        public string StatisztikatKeszit()
+        {
+            return $"Zár: {this.Nev}, hibás PIN-próbálkozások: {this.hibasPinProbal}";
+
+        }
     }
 }
